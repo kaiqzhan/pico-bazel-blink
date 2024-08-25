@@ -1,7 +1,23 @@
+load("@pico-sdk//bazel:defs.bzl", "compatible_with_pico_w", "incompatible_with_config")
+
 cc_binary(
     name = "blink",
     srcs = ["blink.c"],
     deps = [
+        "@pico-sdk//src/rp2_common/pico_stdlib",
+    ],
+)
+
+cc_binary(
+    name = "blink_pico_w",
+    srcs = ["blink.c"],
+    target_compatible_with = incompatible_with_config(
+        "@pico-sdk//bazel/constraint:pico_btstack_config_unset",
+    ) + compatible_with_pico_w(),
+    deps = [
+        # "cyw43_configs:btstack_config",
+        # "cyw43_configs:lwip_config",
+        "@pico-sdk//src/rp2_common/pico_cyw43_arch:pico_cyw43_arch_none",
         "@pico-sdk//src/rp2_common/pico_stdlib",
     ],
 )
